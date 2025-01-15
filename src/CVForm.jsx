@@ -16,7 +16,7 @@ const CVForm = ({ onUpdate }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://172.17.22.165/cv_site/api.php", {
+      const response = await fetch("http://paucano.ddns.net/cv_site/api.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

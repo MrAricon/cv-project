@@ -6,7 +6,7 @@ const CVPreview = () => {
 
   const fetchCVData = async () => {
     try {
-      const response = await fetch("http://172.17.22.165/cv_site/api.php");
+      const response = await fetch("http://paucano.ddns.net/cv_site/api.php");
       const data = await response.json();
       setCvData(data);
     } catch (error) {
