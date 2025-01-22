@@ -6,6 +6,7 @@ const CVForm = ({ onUpdate }) => {
     profession: "",
     email: "",
     experience: "",
+    action: "setCVInfo",
   });
 
   const handleChange = (e) => {
@@ -15,23 +16,28 @@ const CVForm = ({ onUpdate }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+
     try {
       const response = await fetch("http://paucano.ddns.net/cv_site/api.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });
+
       const result = await response.json();
-      if (result.success) {
-        onUpdate();
+      if (response.ok) {
+        onUpdate();s
         alert("CV actualizado con éxito");
       } else {
         alert("Error al actualizar el CV");
       }
     } catch (error) {
       console.error("Error:", error);
+      alert("Error al actualizar el CV");
     }
   };
 

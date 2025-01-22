@@ -1,38 +1,39 @@
 import React, { useState } from 'react';
 import { useAuth } from './AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios'; // Install Axios if not already: npm install axios
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const action = 'login';
   const { login } = useAuth(); // Assuming this sets user info in context
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(''); // Clear any previous error
 
     try {
-      const response = await axios.post('http://paucano.ddns.net/cv_site/api.php?action=login', {
-        email,
-        password,
+      const response = await fetch('http://paucano.ddns.net/cv_site/api.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, action }),
       });
 
-      if (response.data.success) {
-        // Save user data (or token) to context or local storage
-        login(response.data.user); // Assuming `useAuth` context has a `login` function
-        navigate('/cv-project/'); // Redirect to the home page or dashboard
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token); // Save token in localStorage
+        login({ email });
+        navigate('/cv-project/');
       } else {
-        setErrorMessage('Login failed. Please check your email and password.');
+        const error = await response.json();
+        alert(error.error || 'Error logging in');
       }
     } catch (error) {
-      // Handle errors
-      console.error('Login error:', error);
-      setErrorMessage('An error occurred while logging in. Please try again.');
+      console.error('Login failed:', error);
     }
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">

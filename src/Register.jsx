@@ -11,6 +11,7 @@ const Register = () => {
     const { login } = useAuth(); // Assuming this sets user info in context
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
+    const action = "register";
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,10 +23,11 @@ const Register = () => {
         }
 
         try {
-            const response = await axios.post('http://paucano.ddns.net/cv_site/api.php?action=register', {
+            const response = await axios.post('http://paucano.ddns.net/cv_site/api.php', {
                 username,
                 email,
                 password,
+                action,
             });
 
             if (response.data.success) {

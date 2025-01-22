@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, Link } from 'react-router-dom';
 import { AuthProvider, useAuth } from './AuthContext';
 import Login from './Login';
@@ -19,7 +19,7 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link to="/cv_project/" className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+            <Link to="/cv-project/" className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
               Portfolio Manager
             </Link>
           </div>
@@ -52,6 +52,8 @@ const Navigation = () => {
 };
 
 function App() {
+  const [updateTrigger, setUpdateTrigger] = useState(0);
+  const triggerUpdate = () => setUpdateTrigger(prev => prev + 1);
   return (
     <AuthProvider>
       <Router>
@@ -67,11 +69,11 @@ function App() {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                       <div className="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 transition-all duration-300 hover:shadow-xl hover:border-gray-600">
                         <h2 className="text-3xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Actualizar CV</h2>
-                        <CVForm />
+                        <CVForm onUpdate={triggerUpdate} />
                       </div>
                       <div className="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 transition-all duration-300 hover:shadow-xl hover:border-gray-600">
                         <h2 className="text-3xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Vista Previa del CV</h2>
-                        <CVPreview />
+                        <CVPreview updateTrigger={updateTrigger} />
                       </div>
                     </div>
                     <div className="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 transition-all duration-300 hover:shadow-xl hover:border-gray-600">
@@ -90,4 +92,3 @@ function App() {
 }
 
 export default App;
-
